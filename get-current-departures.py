@@ -160,7 +160,7 @@ class ScheduleTool():
     return '''
         <div class="entry">
           <div class="time-info">
-            <p class="time">{time}<span class="delay">{delay}</span></p>
+            <div class="time">{time}<span class="delay">{delay}</span></div>
           </div>
           <p class="destination">{destination}</p>
         </div>
