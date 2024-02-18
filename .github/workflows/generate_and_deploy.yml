@@ -33,11 +33,11 @@ jobs:
         run: ./getdata.sh
       - name: execute py script
         run: python get-current-departures.py
-      - name: upload departures webpage
+      - name: upload departure webpages
         uses: actions/upload-artifact@v4
         with:
-          name: departures
-          path: cur-departures.html
+          name: departure_pages
+          path: pages
 
   deploy-schedule:
     needs: generate-schedule
@@ -49,13 +49,14 @@ jobs:
       - name: download departures
         uses: actions/download-artifact@v4
         with:
-          name: departures
+          name: departure_pages
+          path: pages
       - name: setup Pages
         uses: actions/configure-pages@v4
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: cur-departures.html
+          path: pages
       - name: deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
