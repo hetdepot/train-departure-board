@@ -1,7 +1,7 @@
 name: Fetch static schedule
 on:
   schedule:
-    - cron:  '1 1 1 1 1'  # TODO: update with desired frequency
+    - cron:  '0 3 * * *'
   workflow_dispatch:
 permissions:
   contents: read
