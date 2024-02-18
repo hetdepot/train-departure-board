@@ -10,6 +10,8 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
+env:
+  SCHEDULE_URL: ${{ secrets.schedule_url }}
 
 jobs:
   generate-schedule:
@@ -29,7 +31,7 @@ jobs:
         run: ./getdata.sh
       - name: execute py script
         run: python get-current-departures.py
-    
+
   deploy-schedule:
     needs: generate-schedule
     runs-on: ubuntu-latest
