@@ -76,14 +76,17 @@ class ScheduleTool():
     return stop_translations
 
   def get_datetime_from_string(self, date_string, time_string):
-    should_add_day = int(time_string[:2]) >= 24
-    if should_add_day:
-      hour = str(int(time_string[:2]) - 24)
-      time_string = hour.zfill(2) + time_string[2:]
-    time = datetime.strptime(date_string + ' ' + time_string, self.DATE_FORMAT + ' ' + self.TIME_FORMAT)
-    if should_add_day:
+    fixed_time_string = self.fix_24h_time(time_string)
+    time = datetime.strptime(date_string + ' ' + fixed_time_string, self.DATE_FORMAT + ' ' + self.TIME_FORMAT)
+    if time_string != fixed_time_string:
       time += timedelta(days=1)
     return self.TZ.localize(time)
+
+
+  def fix_24h_time(self, time_string):
+    if int(time_string[:2]) >= 24
+      hour = str(int(time_string[:2]) - 24)
+      return hour.zfill(2) + time_string[2:]
 
 
   def get_departures_for_stop_and_date(self, stop, date):
@@ -153,7 +156,7 @@ class ScheduleTool():
     return departures
 
   def get_html_from_entry(self, entry):
-    time = ':'.join(entry['departure_time'].split(':')[:2])
+    time = self.fix_24h_time(':'.join(entry['departure_time'].split(':')[:2]))
     delay = ''
     if entry['delay'] > 0:
       delay = '+{mins}min'.format(mins=math.floor(entry['delay']/60))
