@@ -84,7 +84,7 @@ class ScheduleTool():
 
 
   def fix_24h_time(self, time_string):
-    if int(time_string[:2]) >= 24
+    if int(time_string[:2]) >= 24:
       hour = str(int(time_string[:2]) - 24)
       return hour.zfill(2) + time_string[2:]
 
