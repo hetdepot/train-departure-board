@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: true
 env:
   SCHEDULE_URL: ${{ secrets.schedule_url }}
+  REAL_TIME_UPDATES_URL: ${{ secrets.real_time_updates_url }}
 
 jobs:
   generate-schedule:
