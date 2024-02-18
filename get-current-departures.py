@@ -134,7 +134,7 @@ class ScheduleTool():
     unique_departures = []
     uniques = set()
     for x in departures_with_delays:
-      k = self.fix_24h_time(x['departure_time']) + x['trip_headsign_nl']
+      k = str(self.fix_24h_time(x['departure_time'])) + x['trip_headsign_nl']
       if k in uniques:
         continue
       uniques.add(k)
