@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Train departure times</title>
+<style type="text/css">
+.root {
+	flex-grow: 1;
+	display: flex;
+}
+.header {
+	height: 120px;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 54px;
+	font-weight: bold;
+	font-family: sans-serif;
+	align-items: center;
+	padding: 0 30px;
+	color: #fafafa;
+}
+.header .row {
+	flex-grow: 0;
+}
+.column, .header, .nmbs-header {
+	display: flex;
+    box-sizing: border-box;
+}
+.entry {
+	display: flex;
+	align-items: center;
+	flex: 1;
+	justify-content: space-between;
+	max-height: calc((100vh - 120px) / 5);
+	padding: 0 34px;
+	text-wrap: nowrap;
+}
+body {
+	margin: 0;
+	font-size: 45px;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #666;
+	height: 100vh;
+}
+.column {
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+	gap: 4px;
+	color: #fafafa;
+}
+.row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-grow: 1;
+	gap: 4px;
+}
+.wrapper {
+	display: flex;
+	min-height: 100%;
+	max-height: 100vh;
+	flex-direction: column;
+	background-color: black;
+	color: #98d0fe;
+}
+.column.even .entry:nth-child(odd), .column.odd .entry:nth-child(even) {
+	background-color: #0e67ab;
+}
+
+.column.even .entry:nth-child(even), .column.odd .entry:nth-child(odd) {
+	background-color: #154c6b;
+}
+.delay {
+	color: #c20e0e;
+	vertical-align: super;
+    font-size: 36px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<div class="header-root">
+		<div class="header row">
+			<!-- <div class="nmbs-header row">
+			</div> -->
+			<div class="current-time"></div>
+			<p class="departure">Vertrek</p>
+			<img src="./img/nmbs.svg" height="75">
+		</div>
+	</div>
+	<div class="root">
+		<div class="row">
+			<div class="column odd">
+				__ENTRIES_ROW_1__
+			</div>
+			<div class="column even">
+				__ENTRIES_ROW_2__
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	(() => {
+		function updateTime() {
+			const date = new Date();
+			document.querySelector('.current-time').textContent = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+		}
+		updateTime();
+		setInterval(updateTime, 1000);
+	})()
+</script>
+</html>
