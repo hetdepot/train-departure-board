@@ -124,9 +124,11 @@ class ScheduleTool():
 
   def get_upcoming_departures(self, stop, max_results=0):
     now = self.get_current_time()
-    cur_date = now.strftime(self.DATE_FORMAT)
+    cur_date = (now-timedelta(hours=3)).strftime(self.DATE_FORMAT)  # assuming there's no trains after 3AM
+    tomorrow_date = (now+timedelta(hours=21)).strftime(self.DATE_FORMAT)
     possible_departures = self.get_departures_for_stop_and_date(stop, cur_date)
-    departures = list(filter(lambda x: x['departure_datetime'] >= now - timedelta(hours=1), possible_departures))  # check 1 hour back to also include delayed trains
+    possible_departures.extend(self.get_departures_for_stop_and_date(stop, tomorrow_date))
+    departures = list(filter(lambda x: x['departure_datetime'] >= now-timedelta(hours=1), possible_departures))  # check 1 hour back to also include delayed trains
     departures_with_delays = self.get_current_delays_for_departures(stop, departures)
     departures_with_delays = list(filter(lambda x: x['departure_datetime'] + timedelta(seconds=x['delay']) >= now, departures_with_delays))  # filter to only display trains that will still depart
     if max_results and max_results > 1:
