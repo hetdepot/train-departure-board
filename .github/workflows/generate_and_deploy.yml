@@ -1,7 +1,7 @@
 name: Generate and deploy train schedule
 on:
   schedule:
-    - cron:  '*/5 * * * *'
+    - cron:  '*/1 * * * *'
   workflow_dispatch:
 permissions:
   contents: read
