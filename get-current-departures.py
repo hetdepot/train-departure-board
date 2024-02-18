@@ -142,7 +142,7 @@ class ScheduleTool():
 
     if max_results and max_results > 1:
       unique_departures = unique_departures[:max_results]
-    unique_departures.sort(key=lambda x: int(x['departure_datetime']))
+    unique_departures.sort(key=lambda x: x['departure_datetime'])
     return unique_departures
 
   def get_current_delays_for_departures(self, stop, departures):
