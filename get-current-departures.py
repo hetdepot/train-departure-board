@@ -131,9 +131,19 @@ class ScheduleTool():
     departures = list(filter(lambda x: x['departure_datetime'] >= now-timedelta(hours=1), possible_departures))  # check 1 hour back to also include delayed trains
     departures_with_delays = self.get_current_delays_for_departures(stop, departures)
     departures_with_delays = list(filter(lambda x: x['departure_datetime'] + timedelta(seconds=x['delay']) >= now, departures_with_delays))  # filter to only display trains that will still depart
+    unique_departures = []
+    uniques = set()
+    for x in departures_with_delays:
+      k = self.fix_24h_time(x['departure_time']) + x['trip_headsign_nl']
+      if k in uniques:
+        continue
+      uniques.add(k)
+      unique_departures.append(x)
+
     if max_results and max_results > 1:
-      departures_with_delays = departures_with_delays[:max_results]
-    return departures_with_delays
+      unique_departures = unique_departures[:max_results]
+    unique_departures.sort(key=lambda x: int(x['departure_datetime']))
+    return unique_departures
 
   def get_current_delays_for_departures(self, stop, departures):
     resp = requests.get(environ.get('REAL_TIME_UPDATES_URL'))
