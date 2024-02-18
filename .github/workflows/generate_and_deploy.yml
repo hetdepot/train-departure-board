@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
+          cache: 'pip'
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
@@ -31,6 +32,11 @@ jobs:
         run: ./getdata.sh
       - name: execute py script
         run: python get-current-departures.py
+      - name: upload departures webpage
+        uses: actions/upload-artifact@v4
+        with:
+          name: departures
+          path: cur-departures.html
 
   deploy-schedule:
     needs: generate-schedule
@@ -39,14 +45,16 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
+      - name: download departures
+        uses: actions/download-artifact@v4
+        with:
+          name: departures
+      - name: setup Pages
         uses: actions/configure-pages@v4
-      - name: Upload artifact
+      - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'cur-departures.html'
-      - name: Deploy to GitHub Pages
+          path: cur-departures.html
+      - name: deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
