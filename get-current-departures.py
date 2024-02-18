@@ -87,6 +87,7 @@ class ScheduleTool():
     if int(time_string[:2]) >= 24:
       hour = str(int(time_string[:2]) - 24)
       return hour.zfill(2) + time_string[2:]
+    return time_string
 
 
   def get_departures_for_stop_and_date(self, stop, date):
