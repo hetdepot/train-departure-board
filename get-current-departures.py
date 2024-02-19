@@ -96,7 +96,8 @@ class ScheduleTool():
       available_stops = list(filter(lambda x: int(x.get('pickup_type', 0)) == 0 or int(x.get('drop_off_type', 0)) == 0, v))
       possible_departures = list(filter(lambda x: x['stop_id'] == stop and self.trip_runs_on_date(k, date) and int(x.get('pickup_type', 0)) == 0, available_stops[:-1]))
       if len(possible_departures) > 0:
-        entry = possible_departures[0]
+        entry = dict()
+        entry['departure_time'] = possible_departures[0]['departure_time']
         entry['trip_id'] = k
         entry['trip_headsign_nl'] = self.translate_stop(self.trips[k]['trip_headsign'], 'nl')
         entry['departure_datetime'] = self.get_datetime_from_string(date, entry['departure_time'])
