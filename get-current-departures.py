@@ -103,7 +103,7 @@ class ScheduleTool():
         result.append(entry)
       elif len(possible_departures) > 1:
         print('SAME STOP MULTIPLE TIMES ON SINGLE ROUTE!', stop)
-    result.sort(key=lambda x: x['departure_time'])
+    result.sort(key=lambda x: x['departure_datetime'])
     return result
 
   def get_service_id_from_trip_id(self, trip_id):
@@ -128,6 +128,7 @@ class ScheduleTool():
     tomorrow_date = (now+timedelta(hours=21)).strftime(self.DATE_FORMAT)
     possible_departures = self.get_departures_for_stop_and_date(stop, cur_date)
     possible_departures.extend(self.get_departures_for_stop_and_date(stop, tomorrow_date))
+    possible_departures.sort(key=lambda x: x['departure_datetime'])
     departures = list(filter(lambda x: x['departure_datetime'] >= now-timedelta(hours=1), possible_departures))  # check 1 hour back to also include delayed trains
     departures_with_delays = self.get_current_delays_for_departures(stop, departures)
     departures_with_delays = list(filter(lambda x: x['departure_datetime'] + timedelta(seconds=x['delay']) >= now, departures_with_delays))  # filter to only display trains that will still depart
@@ -140,9 +141,9 @@ class ScheduleTool():
       uniques.add(k)
       unique_departures.append(x)
 
+    unique_departures.sort(key=lambda x: x['departure_datetime'])
     if max_results and max_results > 1:
       unique_departures = unique_departures[:max_results]
-    unique_departures.sort(key=lambda x: x['departure_datetime'])
     return unique_departures
 
   def get_current_delays_for_departures(self, stop, departures):
